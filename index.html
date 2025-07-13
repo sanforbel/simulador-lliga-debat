@@ -4,8 +4,145 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulador Lliga de Debat</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #fff);
+      text-align: center;
+      padding: 20px;
+      color: #1a237e;
+    }
+    h1 {
+      color: #0d47a1;
+    }
+    .fase, .feedback, .resultat {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      margin: 8px;
+      font-size: 1rem;
+      background-color: #3949ab;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    textarea {
+      width: 90%;
+      height: 100px;
+      margin-top: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    select {
+      font-size: 1rem;
+      padding: 5px 10px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Arxiu placeholder per demostració</h1>
+  <h1>🎤 Simulador Lliga de Debat – Xarxa Vives</h1>
+
+  <div class="fase">
+    <h2>Tema de debat</h2>
+    <p id="tema">¿Estem davant d’una societat més masclista?</p>
+    <button onclick="canviarTema()">🔁 Canvia de tema</button>
+  </div>
+
+  <div class="fase">
+    <h2>🗣️ Fase: <span id="faseActual">Introducció</span></h2>
+    <textarea id="intervencio" placeholder="Escriu la teua intervenció..."></textarea><br>
+    <button onclick="reconeixementVeu()">🎙️ Grava intervenció</button>
+    <button onclick="compartirIntervencio()">📤 Compartir</button>
+    <button onclick="següentFase()">✅ Passa a la següent fase</button>
+  </div>
+
+  <div class="resultat">
+    <h3>📋 Etapes del debat</h3>
+    <ol>
+      <li><b>Introducció</b> – 4 min</li>
+      <li><b>Argumentació</b> – 4 min</li>
+      <li><b>Refutació</b> – 4 min</li>
+      <li><b>Conclusió</b> – 3 min</li>
+    </ol>
+  </div>
+
+  <div class="feedback" id="feedback" style="display:none;">
+    <h2>🔎 Autoavaluació</h2>
+    <p><b>Contingut i argumentació:</b> ¿Has usat dades, exemples i idees clares?</p>
+    <p><b>Estructura i estratègia:</b> ¿Has seguit les fases amb coherència i ordre?</p>
+    <p><b>Expressió i estil:</b> ¿T’has expressat amb fluïdesa i recursos retòrics?</p>
+    <textarea placeholder="Escriu la teua autoavaluació o feedback docent..."></textarea><br>
+    <button onclick="avaluarAmbIA()">🤖 Avaluar amb IA</button>
+    <div id="resultatIA" style="margin-top:15px; color:#0d47a1;"></div>
+  </div>
+
+  <script>
+    const fases = ["Introducció", "Argumentació", "Refutació", "Conclusió"];
+    let indexFase = 0;
+
+    function següentFase() {
+      indexFase++;
+      if (indexFase < fases.length) {
+        document.getElementById("faseActual").innerText = fases[indexFase];
+        document.getElementById("intervencio").value = "";
+      } else {
+        document.querySelector(".fase").style.display = "none";
+        document.getElementById("feedback").style.display = "block";
+      }
+    }
+
+    const temes = [
+      "¿Estem davant d’una societat més masclista?",
+      "¿La IA millorarà realment l’educació?",
+      "¿S'hauria d'eliminar l'ús de mòbils a l'aula?",
+      "¿El sistema educatiu hauria de ser més pràctic que teòric?",
+      "¿Caldria limitar l’ús de xarxes socials entre menors?"
+    ];
+
+    function canviarTema() {
+      const aleatori = temes[Math.floor(Math.random() * temes.length)];
+      document.getElementById("tema").innerText = aleatori;
+    }
+
+    function reconeixementVeu() {
+      const reconeixement = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      reconeixement.lang = "ca-ES";
+      reconeixement.start();
+      reconeixement.onresult = function(event) {
+        const transcripcio = event.results[0][0].transcript;
+        document.getElementById("intervencio").value = transcripcio;
+      };
+    }
+
+    function compartirIntervencio() {
+      const text = document.getElementById("intervencio").value;
+      if (navigator.share) {
+        navigator.share({
+          title: "La meua intervenció de debat",
+          text: text
+        });
+      } else {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("Text copiat al porta-retalls!");
+        });
+      }
+    }
+
+    function avaluarAmbIA() {
+      const simulacio = `🧠 AVALUACIÓ (simulada)
+
+🟢 Contingut: Bona estructuració d'idees amb exemples clars.
+🟡 Estratègia: El discurs podria millorar en transicions entre idees.
+🔵 Expressió: Ús correcte de recursos retòrics. Fluïdesa adequada.`;
+      document.getElementById("resultatIA").innerText = simulacio;
+    }
+  </script>
 </body>
 </html>
