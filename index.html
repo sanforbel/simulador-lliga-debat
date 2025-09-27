@@ -1,11 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Debat App – Simulador Lliga de Debat</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simulador Lliga de Debat – Demo mínima</title>
+<link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-<h1>Contingut disponible al panell de projectes</h1>
+<header>
+<h1>🎤 Simulador Lliga de Debat – Demo</h1>
+<p class="note">Obri esta pàgina en <strong>https</strong> i permet el <strong>micròfon</strong>.</p>
+</header>
+<main>
+<section class="card">
+<h2>1) Roda de temes</h2>
+<button id="spin">🎲 Tema aleatori</button>
+<p id="topic">(prem el botó)</p>
+</section>
+<section class="card">
+<h2>2) Intervenció</h2>
+<textarea id="textInput" placeholder="Escriu la teua intervenció..."></textarea>
+<div class="audio">
+<button id="recBtn">🎙️ Gravar</button>
+<button id="stopBtn" disabled>⏹️ Parar</button>
+<audio id="playback" controls></audio>
+<p id="micStatus" class="muted">Micròfon: esperant permís...</p>
+</div>
+</section>
+<section class="card">
+<h2>3) Autoavaluació (demo)</h2>
+<button id="evaluate">✅ Avalua</button>
+<div id="result"></div>
+</section>
+</main>
+<footer>
+<small>© 2025 – Demo GitHub Pages</small>
+</footer>
+<script src="./app.js"></script>
 </body>
 </html>
